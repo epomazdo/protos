@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "epomazdo.sso.v1;ssov1";
+
+// Auth сервис для управления аутентификацией и авторизацией
+service Auth {
+    // Register регистрирует нового пользователя в системе
+    rpc Register (RegisterRequest) returns (RegisterResponse);
+    
+    // Login выполняет аутентификацию пользователя и возвращает токен
+    rpc Login (LoginRequest) returns (LoginResponse);
+    
+    // IsAdmin проверяет, является ли пользователь администратором
+    rpc IsAdmin (IsAdminRequest) returns (IsAdminResponse);
+}
+
+message RegisterRequest {
+    string email = 1; // Почта пользователя для регистрации
+    string password = 2; // Пароль пользователя для регистрации
+}
+
+message RegisterResponse {
+    int64 user_id = 1; // ID зарегестрированного пользователя
+}
+
+message LoginRequest {
+    string email = 1; // Почта пользователя для авторизации
+    string password = 2; // Пароль пользователя для авторизации
+    int32 app_id = 3; // ID приложения в которое авторизуется пользователь
+}
+
+message LoginResponse {
+    string token = 1; // Auth токен для авторизованного пользователя
+}
+
+message IsAdminRequest {
+    int64 user_id = 1; // ID пользователя для валидации на админа
+}
+
+message IsAdminResponse {
+    bool is_admin = 1; // Индикатор админ ли пользователь
+}
